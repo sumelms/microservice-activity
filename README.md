@@ -1,15 +1,19 @@
+<!--suppress HtmlDeprecatedAttribute -->
 <p align="center">
-  <img src=".github/sumelms.svg" />
+  <img alt="Sumé LMS" src=".github/sumelms.svg" />
 </p>
 
 <p align="center">
-  <a href="https://travis-ci.org/sumelms/<microservice-repository>">
-    <img alt="Travis (.org)" src="https://travis-ci.org/sumelms/<microservice-repository>.svg?branch=main">
-  </a>  
-  <a href="https://codecov.io/gh/sumelms/<microservice-repository>">
-    <img src="https://codecov.io/gh/sumelms/<microservice-repository>/branch/main/graph/badge.svg?token=8E92BS3SR9" />
+  <a href="https://goreportcard.com/report/github.com/sumelms/microservice-activity">
+    <img alt="goreportcard" src="https://goreportcard.com/badge/github.com/sumelms/microservice-activity" />
   </a>
-  <img alt="GitHub" src="https://img.shields.io/github/license/sumelms/<microservice-repository>">
+  <a href="https://github.com/sumelms/microservice-activity/actions/workflows/main.yaml">
+    <img alt="github action" src="https://github.com/sumelms/microservice-activity/actions/workflows/main.yaml/badge.svg" />
+  </a>
+  <a href="https://codecov.io/gh/sumelms/microservice-activity" >
+    <img alt="codecov" src="https://codecov.io/gh/sumelms/microservice-activity/branch/main/graph/badge.svg?token=B78WZL5QDY"/>
+    </a>
+  <img alt="GitHub" src="https://img.shields.io/github/license/sumelms/microservice-activity">
   <a href="https://discord.gg/Yh9q9cd">
     <img alt="Discord" src="https://img.shields.io/discord/726500188021063682">
   </a>
@@ -17,9 +21,11 @@
 
 ## About Sumé LMS
 
-> Note: This repository contains the **<REPLACE ME>** of the Sumé LMS. If you are looking for more information about the application, we strongly recommend you to [check the documentation](https://www.sumelms.com/docs).
+> Note: This repository contains the **activity microservice** of the Sumé LMS. If you are looking for more information
+> about the application, we strongly recommend you to [check the documentation](https://www.sumelms.com/docs).
 
-Sumé LMS is a modern and open-source learning management system that uses modern technologies to deliver performance and scalability to your learning environment.
+Sumé LMS is a modern and open-source learning management system that uses modern technologies to deliver performance
+and scalability to your learning environment.
 
 - Compatible with SCORM and xAPI (TinCan)
 - Flexible and modular
@@ -33,46 +39,196 @@ Sumé LMS is a modern and open-source learning management system that uses moder
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
-- [Setup](#setup)
+- [Prepare](#prepare)
 - [Building](#building)
+- [Running](#running)
+- [Configuring](#configuring)
 - [Testing](#testing)
+- [Documentation](#documentation)
 - [Contributing](#contributing)
 - [Code of Conduct](#code-of-conduct)
-- [Team](#team)
+- [Contributors](#contributors)
 - [Support](#support)
 - [License](#license)
 
 ## Prerequisites
 
-@TODO
+- Go >= 1.21
+- PostgreSQL >= 16.0
 
-## Setup
+## Prepare
 
-@TODO
+Clone the repository
+
+```bash
+$ git clone git@github.com:sumelms/microservice-activity.git
+```
+
+Access the project folder, and download the Go dependencies
+
+```bash
+$ go get ./...
+```
+
+It may take a while to download all the dependencies, then you are [ready to build](#building).
 
 ## Building
 
-@TODO
+There are two ways that you can use to build this microservice. The first one will build it using your own machine,
+while the second one will build it using a container runtime. Also, you can build the container image to use it with
+[Docker](https://www.docker.com/) or [Podman](https://podman.io/), but it is up to you.
+
+Here are the following instructions for each available option:
+
+### Local build
+
+It should be pretty simple, once all the dependencies are download just run the following command:
+
+```bash
+$ make build
+```
+
+It will generate an executable file at the `/bin` directory inside the project folder, and probably you want to know
+how to [run it](#running).
+
+### Container build
+
+At this point, I'll assume that you have installed and configure the container runtime (Docker or Podman) in your system.
+
+```bash
+$ make container-build
+```
+
+If everything works, you can now [run the microservice using the container image](#running).
+
+### Local database
+
+You can have your local database running the following command:
+
+```bash
+$ docker-compose up -d postgres
+```
+
+And then you could run the migrations using 
+
+```bash
+$ make migration-up
+```
+
+> *Note*
+> You will have to install the [golang-migrate](https://github.com/golang-migrate/migrate) tool
+> It uses the same environment variables from the configuration section.
+
+## Running
+
+OK! Now you build it you need to run the microservice. That should also be pretty easy.
+
+### Local run
+
+If you want to run the microservice locally, you may need to have a **Postgres** instance running and accessible
+from your machine, and you may need to first [configure it](#configuring). Then you can run it, you just need to
+execute the following command:
+
+```bash
+$ make run
+```
+
+Once it is running you can test it: http://localhost:8080/health
+
+### Container run
+
+If you want to run the microservice using a container runtime, the easiest way to do it is using the `docker-composer`
+or `podman-compose`.
+
+All that you need to do is, execute the command:
+
+```bash
+$ make compose-up
+```
+
+It should create 2 containers, one that runs the microservice and another that runs the **Postgres**. If you already
+have your own **Postgres** instance you can only run the microservice container:
+
+```bash
+$ make container-run
+```
+
+Keep in mind that, in both cases, it will load the `config/config.yml` file from the project. If you want to change some
+configurations you can set the environment variables in your `docker-compose.yml` file, or edit the configuration file.
+
+Once you have the IP address you can now access the endpoint: http://localhost:8080/health
+
+## Configuring
+
+You can easily configure the application editing the `config/config.yml` file or using environment variables. We do
+strongly recommend that you use the configuration file instead of the environment variables. Again, it is up to you
+to decide. If you want to use the variables, be sure to prefix it all with `SUMELMS_`.
+
+The list of the environment variables and it's default values:
+
+```bash
+SUMELMS_SERVER_HTTP_PORT = 8080
+SUMELMS_DATABASE_DRIVER = postgres
+SUMELMS_DATABASE_HOST = localhost
+SUMELMS_DATABASE_PORT = 5432
+SUMELMS_DATABASE_USER = postgres
+SUMELMS_DATABASE_PASSWORD = password
+SUMELMS_DATABASE_DATABASE = sumelms_activity
+```
+
+> We are using [configuro](https://github.com/sherifabdlnaby/configuro) to manage the configuration, so the precedence
+> order to configuration is: _Environment variables > .env > Config File > Value set in Struct before loading._
 
 ## Testing
 
-@TODO
+You can run all the tests with one single command:
+
+```bash
+$ make test
+```
+
+## Documentation
+
+The complete Sumé LMS documentation can be found in our [official website](https://sumelms.com/docs).
+
+### API
+
+This project uses [Swagger](https://swagger.io/) to generate the API documentation and API mockup, the files can be
+found `swagger` directory.
+
+Sometimes, a microservice can cover more than one domain boundary, in this case, the API scheme should be stored in the
+same directory indicated above, but following the following filename convention: `<domain-name>-api.yaml`
+
+The best way to edit the API scheme is by using the [Swagger Editor](https://editor.swagger.io/).
 
 ## Contributing
 
-Thank you for considering contributing to the project. In order to ensure that the Sumé LMS community is welcome to all make sure to read our [Contributor Guideline](https://www.sumelms.com/docs/contributing).
+Thank you for considering contributing to the project. In order to ensure that the Sumé LMS community is welcome to
+all make sure to read our [Contributor Guideline](https://sumelms.com/docs/contributing).
 
 ## Code of Conduct
 
-Would you like to contribute and participate in our communities? Please read our [Code of Conduct](https://www.sumelms.com/docs/conduct).
+Would you like to contribute and participate in our communities? Please read our [Code of Conduct](https://sumelms.com/docs/conduct).
 
-## Team
+## Contributors
 
-@TODO
+<a href="https://github.com/sumelms/microservice-activity/graphs/contributors">
+  <img alt="contributors" src="https://contrib.rocks/image?repo=sumelms/microservice-activity" />
+</a>
+
+Made with [contrib.rocks](https://contrib.rocks).
 
 ## Support
 
-@TODO
+### Discussion
+
+You can reach us or get community support in our [Discord server](https://discord.gg/Yh9q9cd). This is the best way to
+find help and get in touch with the community.
+
+### Bugs or feature requests
+
+If you found a bug or have a feature request, the best way to do
+it is [opening an issue](https://github.com/sumelms/microservice-activity/issues).
 
 ## License
 

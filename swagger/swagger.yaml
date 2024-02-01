@@ -1,0 +1,18 @@
+basePath: /api/v1
+definitions:
+host: localhost:8080
+info:
+  contact:
+    email: support@sumelms.com
+    name: LMS Support
+    url: https://sumelms.com/support
+  description: This is the Sumé LMS API for Activity Microservice
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://sumelms.com/docs/terms
+  title: Sumé LMS Activity API
+  version: "1.0"
+paths:
+securityDefinitions:
+swagger: "2.0"

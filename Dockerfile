@@ -1,0 +1,39 @@
+###################
+# Builder
+###################
+FROM golang AS builder
+
+RUN apt update && apt install -y unzip
+
+ENV GO111MODULE=on
+ENV PROTOC_VERSION=24.3
+ENV GOLANGCILINT_VERSION=v1.54.2
+
+# Install dependencies
+RUN curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin ${GOLANGCILINT_VERSION} \
+    && curl -L https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip -o /tmp/protoc.zip \
+    && unzip -o /tmp/protoc.zip -d /usr/local bin/protoc \
+    && unzip -o /tmp/protoc.zip -d /usr/local 'include/*' \
+    && rm /tmp/protoc.zip \
+    && go get google.golang.org/protobuf/cmd/protoc-gen-go \
+    && go get google.golang.org/grpc/cmd/protoc-gen-go-grpc
+
+WORKDIR $GOPATH/src/github.com/sumelms/sumelms-activity
+ADD . .
+
+# Build
+RUN make build
+
+###################
+# Microservice
+###################
+FROM registry.access.redhat.com/ubi8/ubi-minimal
+
+WORKDIR /root/
+RUN mkdir -p ./cmd/sumelms
+
+COPY --from=builder /go/src/github.com/sumelms/sumelms-activity/bin/sumelms-activity .
+
+EXPOSE 8080
+
+CMD ["./sumelms-activity"]

@@ -1,0 +1,23 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is the Sumé LMS API for Activity Microservice",
+        "title": "Sumé LMS Activity API",
+        "termsOfService": "https://sumelms.com/docs/terms",
+        "contact": {
+            "name": "LMS Support",
+            "url": "https://sumelms.com/support",
+            "email": "support@sumelms.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/api/v1",
+    "paths": {},
+    "definitions": {},
+    "securityDefinitions": {}
+}
