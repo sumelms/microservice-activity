@@ -6,6 +6,7 @@ require (
 	github.com/DATA-DOG/go-sqlmock v1.5.2
 	github.com/go-kit/log v0.2.1
 	github.com/go-playground/validator/v10 v10.17.0
+	github.com/google/uuid v1.6.0
 	github.com/gorilla/mux v1.8.1
 	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/jmoiron/sqlx v1.3.5
@@ -32,7 +33,6 @@ require (
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator v9.31.0+incompatible // indirect
-	github.com/google/uuid v1.6.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/joho/godotenv v1.3.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect

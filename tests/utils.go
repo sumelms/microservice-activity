@@ -6,13 +6,17 @@ import (
 	"time"
 
 	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 	"github.com/sumelms/microservice-activity/tests/database"
 )
 
 var (
-	Now       = time.Now()
-	EmptyRows = sqlmock.NewRows([]string{})
+	Now          = time.Now()
+	ActivityUUID = uuid.MustParse("d6bb059b-fc2d-485a-9f93-35fc96b1dedd")
+	ContentID    = uuid.MustParse("05ed8a06-d8e0-4b09-ae83-f9cd80564fa3")
+	ForkID       = uuid.MustParse("17492703-454c-485d-b244-a240f23f56c4")
+	EmptyRows    = sqlmock.NewRows([]string{})
 )
 
 func NewTestDB(queries map[string]string) (*sqlx.DB, sqlmock.Sqlmock, map[string]*sqlmock.ExpectedPrepare) {
