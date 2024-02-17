@@ -37,14 +37,14 @@ func (r ActivityRepository) statement(s string) (*sqlx.Stmt, error) {
 	return stmt, nil
 }
 
-func (r ActivityRepository) Activity(activity_uuid uuid.UUID) (domain.Activity, error) {
+func (r ActivityRepository) Activity(activityUUID uuid.UUID) (domain.Activity, error) {
 	stmt, err := r.statement(getActivity)
 	if err != nil {
 		return domain.Activity{}, err
 	}
 
 	var a domain.Activity
-	if err := stmt.Get(&a, activity_uuid); err != nil {
+	if err := stmt.Get(&a, activityUUID); err != nil {
 		return domain.Activity{},
 			errors.WrapErrorf(err, errors.ErrCodeUnknown, "error getting activity")
 	}
@@ -106,13 +106,13 @@ func (r ActivityRepository) UpdateActivity(a *domain.Activity) error {
 	return nil
 }
 
-func (r ActivityRepository) DeleteActivity(activity_uuid uuid.UUID) error {
+func (r ActivityRepository) DeleteActivity(activityUUID uuid.UUID) error {
 	stmt, err := r.statement(deleteActivity)
 	if err != nil {
 		return err
 	}
 
-	if _, err := stmt.Exec(activity_uuid); err != nil {
+	if _, err := stmt.Exec(activityUUID); err != nil {
 		return errors.WrapErrorf(err, errors.ErrCodeUnknown, "error deleting activity")
 	}
 	return nil

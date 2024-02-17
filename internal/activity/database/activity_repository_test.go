@@ -43,7 +43,7 @@ func TestRepository_Activity(t *testing.T) {
 	)
 
 	type args struct {
-		activity_uuid uuid.UUID
+		activityUUID uuid.UUID
 	}
 
 	tests := []struct {
@@ -55,14 +55,14 @@ func TestRepository_Activity(t *testing.T) {
 	}{
 		{
 			name:    "get activity",
-			args:    args{activity_uuid: utils.ActivityUUID},
+			args:    args{activityUUID: utils.ActivityUUID},
 			rows:    validRows,
 			want:    activity,
 			wantErr: false,
 		},
 		{
 			name:    "activity not found error",
-			args:    args{activity_uuid: uuid.MustParse("8281f61e-956e-4f64-ac0e-860c444c5f86")},
+			args:    args{activityUUID: uuid.MustParse("8281f61e-956e-4f64-ac0e-860c444c5f86")},
 			rows:    utils.EmptyRows,
 			want:    domain.Activity{},
 			wantErr: true,
@@ -86,7 +86,7 @@ func TestRepository_Activity(t *testing.T) {
 
 			prep.ExpectQuery().WithArgs(utils.ActivityUUID).WillReturnRows(tt.rows)
 
-			got, err := r.Activity(tt.args.activity_uuid)
+			got, err := r.Activity(tt.args.activityUUID)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Activity() error = %v, wantErr %v", err, tt.wantErr)
 				return
