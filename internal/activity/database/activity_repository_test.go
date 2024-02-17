@@ -14,9 +14,9 @@ import (
 
 var (
 	activity = domain.Activity{
-		ID:        1,
-		UUID:      utils.ActivityUUID,
-		ContentID: utils.ContentID,
+		ID:          1,
+		UUID:        utils.ActivityUUID,
+		ContentUUID: utils.ContentUUID,
 
 		Name:        "name-text",
 		Description: "description-text",
@@ -35,17 +35,17 @@ func newActivityTestDB() (*sqlx.DB, sqlmock.Sqlmock, map[string]*sqlmock.Expecte
 
 func TestRepository_Activity(t *testing.T) {
 	validRows := sqlmock.NewRows([]string{
-		"id", "uuid", "content_id",
+		"id", "uuid", "content_uuid",
 		"name", "description", "content_type", "taxonomy",
 		"created_at", "updated_at", "deleted_at",
 	}).AddRow(
-		activity.ID, activity.UUID, activity.ContentID,
+		activity.ID, activity.UUID, activity.ContentUUID,
 		activity.Name, activity.Description, activity.ContentType, activity.Taxonomy,
 		activity.CreatedAt, activity.UpdatedAt, activity.DeletedAt,
 	)
 
 	type args struct {
-		id uuid.UUID
+		activity_uuid uuid.UUID
 	}
 
 	tests := []struct {
@@ -57,14 +57,14 @@ func TestRepository_Activity(t *testing.T) {
 	}{
 		{
 			name:    "get activity",
-			args:    args{id: utils.ActivityUUID},
+			args:    args{activity_uuid: utils.ActivityUUID},
 			rows:    validRows,
 			want:    activity,
 			wantErr: false,
 		},
 		{
 			name:    "activity not found error",
-			args:    args{id: uuid.MustParse("8281f61e-956e-4f64-ac0e-860c444c5f86")},
+			args:    args{activity_uuid: uuid.MustParse("8281f61e-956e-4f64-ac0e-860c444c5f86")},
 			rows:    utils.EmptyRows,
 			want:    domain.Activity{},
 			wantErr: true,
@@ -88,7 +88,7 @@ func TestRepository_Activity(t *testing.T) {
 
 			prep.ExpectQuery().WithArgs(utils.ActivityUUID).WillReturnRows(tt.rows)
 
-			got, err := r.Activity(tt.args.id)
+			got, err := r.Activity(tt.args.activity_uuid)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Activity() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -102,15 +102,15 @@ func TestRepository_Activity(t *testing.T) {
 
 func TestRepository_Activities(t *testing.T) {
 	validRows := sqlmock.NewRows([]string{
-		"id", "uuid", "content_id",
+		"id", "uuid", "content_uuid",
 		"name", "description", "content_type", "taxonomy",
 		"created_at", "updated_at", "deleted_at",
 	}).AddRow(
-		activity.ID, activity.UUID, activity.ContentID,
+		activity.ID, activity.UUID, activity.ContentUUID,
 		activity.Name, activity.Description, activity.ContentType, activity.Taxonomy,
 		activity.CreatedAt, activity.UpdatedAt, activity.DeletedAt,
 	).AddRow(
-		2, uuid.MustParse("19cea06b-d068-44e1-ac76-d4761dec2e5d"), activity.ContentID,
+		2, uuid.MustParse("19cea06b-d068-44e1-ac76-d4761dec2e5d"), activity.ContentUUID,
 		activity.Name, activity.Description, activity.ContentType, activity.Taxonomy,
 		activity.CreatedAt, activity.UpdatedAt, activity.DeletedAt,
 	)
@@ -167,11 +167,11 @@ func TestRepository_Activities(t *testing.T) {
 
 func TestRepository_CreateActivity(t *testing.T) {
 	validRows := sqlmock.NewRows([]string{
-		"id", "uuid", "content_id",
+		"id", "uuid", "content_uuid",
 		"name", "description", "content_type", "taxonomy",
 		"created_at", "updated_at", "deleted_at",
 	}).AddRow(
-		activity.ID, activity.UUID, activity.ContentID,
+		activity.ID, activity.UUID, activity.ContentUUID,
 		activity.Name, activity.Description, activity.ContentType, activity.Taxonomy,
 		activity.CreatedAt, activity.UpdatedAt, activity.DeletedAt,
 	)
@@ -226,11 +226,11 @@ func TestRepository_CreateActivity(t *testing.T) {
 
 func TestRepository_UpdateActivity(t *testing.T) {
 	validRows := sqlmock.NewRows([]string{
-		"id", "uuid", "content_id",
+		"id", "uuid", "content_uuid",
 		"name", "description", "content_type", "taxonomy",
 		"created_at", "updated_at", "deleted_at",
 	}).AddRow(
-		activity.ID, activity.UUID, activity.ContentID,
+		activity.ID, activity.UUID, activity.ContentUUID,
 		activity.Name, activity.Description, activity.ContentType, activity.Taxonomy,
 		activity.CreatedAt, activity.UpdatedAt, activity.DeletedAt,
 	)

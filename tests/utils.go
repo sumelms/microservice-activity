@@ -14,7 +14,7 @@ import (
 var (
 	Now          = time.Now()
 	ActivityUUID = uuid.MustParse("d6bb059b-fc2d-485a-9f93-35fc96b1dedd")
-	ContentID    = uuid.MustParse("05ed8a06-d8e0-4b09-ae83-f9cd80564fa3")
+	ContentUUID  = uuid.MustParse("05ed8a06-d8e0-4b09-ae83-f9cd80564fa3")
 	EmptyRows    = sqlmock.NewRows([]string{})
 )
 

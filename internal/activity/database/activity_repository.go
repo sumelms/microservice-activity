@@ -37,14 +37,14 @@ func (r ActivityRepository) statement(s string) (*sqlx.Stmt, error) {
 	return stmt, nil
 }
 
-func (r ActivityRepository) Activity(id uuid.UUID) (domain.Activity, error) {
+func (r ActivityRepository) Activity(activity_uuid uuid.UUID) (domain.Activity, error) {
 	stmt, err := r.statement(getActivity)
 	if err != nil {
 		return domain.Activity{}, err
 	}
 
 	var a domain.Activity
-	if err := stmt.Get(&a, id); err != nil {
+	if err := stmt.Get(&a, activity_uuid); err != nil {
 		return domain.Activity{},
 			errors.WrapErrorf(err, errors.ErrCodeUnknown, "error getting activity")
 	}
@@ -72,7 +72,7 @@ func (r ActivityRepository) CreateActivity(a *domain.Activity) error {
 	}
 
 	args := []interface{}{
-		a.ContentID,
+		a.ContentUUID,
 
 		a.Name,
 		a.Description,
@@ -93,7 +93,7 @@ func (r ActivityRepository) UpdateActivity(a *domain.Activity) error {
 
 	args := []interface{}{
 		// set
-		a.ContentID,
+		a.ContentUUID,
 		a.Name,
 		a.Description,
 		a.ContentType,
@@ -107,13 +107,13 @@ func (r ActivityRepository) UpdateActivity(a *domain.Activity) error {
 	return nil
 }
 
-func (r ActivityRepository) DeleteActivity(id uuid.UUID) error {
+func (r ActivityRepository) DeleteActivity(activity_uuid uuid.UUID) error {
 	stmt, err := r.statement(deleteActivity)
 	if err != nil {
 		return err
 	}
 
-	if _, err := stmt.Exec(id); err != nil {
+	if _, err := stmt.Exec(activity_uuid); err != nil {
 		return errors.WrapErrorf(err, errors.ErrCodeUnknown, "error deleting activity")
 	}
 	return nil
