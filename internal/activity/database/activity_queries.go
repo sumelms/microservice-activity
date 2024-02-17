@@ -12,7 +12,7 @@ func queriesActivity() map[string]string {
 	return map[string]string{
 		createActivity: `INSERT INTO
 			activities (content_uuid, name, description, content_type, taxonomy)
-			VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
+			VALUES ($1, $2, $3, $4, $5) RETURNING *`,
 		deleteActivity: `UPDATE activities SET deleted_at = NOW() WHERE uuid = $1 AND deleted_at IS NULL`,
 		getActivity:    `SELECT * FROM activities WHERE uuid = $1 AND deleted_at IS NULL`,
 		listActivity:   `SELECT * FROM activities WHERE deleted_at IS NULL`,
