@@ -72,7 +72,6 @@ func (r ActivityRepository) CreateActivity(a *domain.Activity) error {
 	}
 
 	args := []interface{}{
-		a.ForkID,
 		a.ContentID,
 
 		a.Name,
@@ -94,7 +93,6 @@ func (r ActivityRepository) UpdateActivity(a *domain.Activity) error {
 
 	args := []interface{}{
 		// set
-		a.ForkID,
 		a.ContentID,
 		a.Name,
 		a.Description,

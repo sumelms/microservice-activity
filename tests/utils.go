@@ -15,7 +15,6 @@ var (
 	Now          = time.Now()
 	ActivityUUID = uuid.MustParse("d6bb059b-fc2d-485a-9f93-35fc96b1dedd")
 	ContentID    = uuid.MustParse("05ed8a06-d8e0-4b09-ae83-f9cd80564fa3")
-	ForkID       = uuid.MustParse("17492703-454c-485d-b244-a240f23f56c4")
 	EmptyRows    = sqlmock.NewRows([]string{})
 )
 

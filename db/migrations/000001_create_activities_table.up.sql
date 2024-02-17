@@ -4,7 +4,6 @@ CREATE TABLE activities
 (
     id              bigserial       CONSTRAINT activities_pk PRIMARY KEY,
     uuid            uuid            DEFAULT uuid_generate_v4() NOT NULL,
-    fork_id         uuid            NULL,
     content_id      uuid            NOT NULL,
 
     name            varchar         NOT NULL,

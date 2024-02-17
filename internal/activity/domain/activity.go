@@ -10,7 +10,6 @@ import (
 type Activity struct {
 	ID        uint      `json:"id"`
 	UUID      uuid.UUID `json:"uuid"`
-	ForkID    uuid.UUID `db:"fork_id"  json:"fork_id"`
 	ContentID uuid.UUID `db:"content_id"  json:"content_id"`
 
 	Name        string `json:"name"`
