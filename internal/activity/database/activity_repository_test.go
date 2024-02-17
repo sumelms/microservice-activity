@@ -17,15 +17,13 @@ var (
 		ID:          1,
 		UUID:        utils.ActivityUUID,
 		ContentUUID: utils.ContentUUID,
-
 		Name:        "name-text",
 		Description: "description-text",
 		ContentType: "type-text",
 		Taxonomy:    "taxonomy-text",
-
-		CreatedAt: utils.Now,
-		UpdatedAt: utils.Now,
-		DeletedAt: nil,
+		CreatedAt:   utils.Now,
+		UpdatedAt:   utils.Now,
+		DeletedAt:   nil,
 	}
 )
 

@@ -73,7 +73,6 @@ func (r ActivityRepository) CreateActivity(a *domain.Activity) error {
 
 	args := []interface{}{
 		a.ContentUUID,
-
 		a.Name,
 		a.Description,
 		a.ContentType,
