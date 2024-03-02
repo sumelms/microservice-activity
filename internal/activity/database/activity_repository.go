@@ -78,7 +78,7 @@ func (r ActivityRepository) CreateActivity(a *domain.Activity) error {
 		a.ContentType,
 		a.Taxonomy,
 	}
-	if err := stmt.Get(a, args...); err != nil {
+	if err := stmt.QueryRowx(args...).StructScan(a); err != nil {
 		return errors.WrapErrorf(err, errors.ErrCodeUnknown, "error creating activity")
 	}
 	return nil
@@ -100,7 +100,7 @@ func (r ActivityRepository) UpdateActivity(a *domain.Activity) error {
 		// where
 		a.UUID,
 	}
-	if err := stmt.Get(a, args...); err != nil {
+	if err := stmt.QueryRowx(args...).StructScan(a); err != nil {
 		return errors.WrapErrorf(err, errors.ErrCodeUnknown, "error updating activity")
 	}
 	return nil
