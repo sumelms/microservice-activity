@@ -2,7 +2,7 @@ BEGIN;
 
 CREATE TABLE activities
 (
-    id              bigserial       CONSTRAINT activities_pk PRIMARY KEY,
+    id              integer         PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     uuid            uuid            DEFAULT uuid_generate_v4() NOT NULL,
     content_uuid    uuid            NOT NULL,
 
@@ -16,8 +16,6 @@ CREATE TABLE activities
     deleted_at      timestamp
 );
 
-CREATE UNIQUE INDEX activities_id_uindex
-    ON activities (id);
 CREATE UNIQUE INDEX activities_uuid_uindex
     ON activities (uuid);
 

@@ -8,7 +8,6 @@ import (
 
 // Activity struct.
 type Activity struct {
-	ID          uint       `json:"id"`
 	UUID        uuid.UUID  `json:"uuid"`
 	ContentUUID uuid.UUID  `db:"content_uuid"  json:"content_uuid"`
 	Name        string     `json:"name"`
